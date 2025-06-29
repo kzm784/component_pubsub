@@ -7,9 +7,48 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rclcpp_components REQUIRED)
+find_package(std_msgs REQUIRED)
+
+# talker_component
+add_library(talker_component SHARED
+  src/talker_component.cpp
+)
+
+ament_target_dependencies(talker_component
+  rclcpp
+  rclcpp_components
+  std_msgs
+)
+
+rclcpp_components_register_node(talker_component
+  PLUGIN "component_pubsub::SimpleTalker"
+  EXECUTABLE talker_component_node
+)
+
+# listener_component
+add_library(listener_component SHARED
+  src/listener_component.cpp
+)
+
+ament_target_dependencies(listener_component
+  rclcpp
+  rclcpp_components
+  std_msgs
+)
+
+rclcpp_components_register_node(listener_component
+  PLUGIN "component_pubsub::SimpleListener"
+  EXECUTABLE listener_component_node
+)
+
+install(
+  TARGETS talker_component listener_component
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
