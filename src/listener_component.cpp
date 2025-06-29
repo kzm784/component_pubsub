@@ -25,7 +25,7 @@ class SimpleListener : public rclcpp::Node
         rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
 };
 
-} // namespace component_pobsub
+} // namespace component_pubsub
 
 #include <rclcpp_components/register_node_macro.hpp>
 RCLCPP_COMPONENTS_REGISTER_NODE(component_pubsub::SimpleListener)
